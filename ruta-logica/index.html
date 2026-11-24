@@ -1,0 +1,568 @@
+<!doctype html>
+<html lang="es-MX">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#1b1841">
+<meta name="description" content="Arma algoritmos y resuelve retos de lógica matemática en Math Hacking.">
+<title>Ruta lógica · Math Hacking</title>
+<style>
+:root{color-scheme:dark;--ink:#f7f3ff;--muted:#beb6d8;--panel:#26224d;--edge:#48416f;--mint:#baf480;--violet:#b9a4ff;--pink:#ffadc5;--bg:#191636;font:500 15px/1.5 system-ui,sans-serif}
+*{box-sizing:border-box}body{margin:0;color:var(--ink);background:radial-gradient(ellipse at 85% 0,#33245b,transparent 54%),var(--bg);min-height:100vh}button,select{font:inherit;color:inherit}button{cursor:pointer}button:disabled,select:disabled{cursor:default;opacity:.48}button:focus-visible,select:focus-visible{outline:3px solid var(--mint);outline-offset:3px}button,select{border:1px solid var(--edge);background:#322c58;border-radius:10px}button:hover:not(:disabled){filter:brightness(1.16)}button[hidden]{display:none}
+.shell{max-width:1230px;margin:auto;padding:24px clamp(14px,4vw,50px) 28px}.top,.board-head,.editor-head,.actions,.caption{display:flex;align-items:center;justify-content:space-between;gap:12px}.top{padding-bottom:18px;border-bottom:1px solid var(--edge);flex-wrap:wrap}.brand{display:flex;align-items:center;gap:11px;font-weight:850;letter-spacing:.11em;font-size:.82rem}.brand b{display:grid;place-items:center;width:36px;height:36px;background:var(--mint);color:#252246;border-radius:10px;font-size:1.35rem}.progress{color:var(--mint);font-weight:750;font-size:.87rem}
+.intro{padding:22px 0 15px}.intro p{margin:4px 0;color:var(--muted)}h1,h2,h3,p{margin:0}h1{font-size:clamp(2.7rem,7vw,5.35rem);font-weight:900;line-height:.99;letter-spacing:-.075em}h1 span{color:var(--mint)}h2{font-size:1.16rem;line-height:1.3}h3{font-size:.85rem;margin-bottom:8px;color:var(--muted)}.levels{display:flex;gap:7px;flex-wrap:wrap;margin:3px 0 19px}.level{min-width:43px;min-height:39px;padding:5px 10px;font-weight:750}.level[aria-current=true]{background:var(--violet);color:#1e1939;border-color:var(--violet)}.done::after{content:" ✓";color:var(--mint)}.done[aria-current=true]::after{color:#23432b}
+.layout{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:16px;align-items:start}.card{background:var(--panel);border:1px solid var(--edge);border-radius:19px;min-width:0;overflow:hidden}.board-head,.editor-head{align-items:flex-start;padding:16px 16px 10px}.mission{margin:6px 0 0;color:var(--muted);font-size:.89rem}.chip{white-space:nowrap;background:#3b345f;border-radius:8px;padding:5px 8px;color:var(--mint);font-weight:750;font-size:.83rem}.board-wrap{padding:5px 16px 12px}.cases{display:flex;flex-wrap:wrap;gap:7px;margin:1px 0 9px}.cases:empty{display:none}.cases button{padding:5px 9px;font-size:.82rem}.cases [aria-pressed=true]{background:var(--violet);color:#201936}.grid{position:relative;display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px;border:1px solid #4b4669;border-radius:13px;background:#191a36;padding:5px;overflow:hidden}.tile{display:grid;place-items:center;aspect-ratio:1;background:#3e4263;border:1px solid #515675;border-radius:7px;font-weight:850;font-size:clamp(.74rem,2.2vw,1.24rem);color:var(--ink)}.tile:nth-child(even){background:#393f61}.tile.wall{background:repeating-linear-gradient(135deg,#262744 0 5px,#2d2e4c 5px 10px);border-color:#353552;color:#777394}.tile.goal{color:#211a38;background:#c0a9ff;border-color:#e0d2ff}.tile.value{background:#2e594e;color:#e4ffd2;border-color:#6b9f73}.tile.negative{background:#693a57;color:#ffecf3;border-color:#9d5e7a}.tile.collected{color:#e0ddea;background:#434769}.tile.home{border-style:dashed}
+.rabbit{position:absolute;left:0;top:0;z-index:2;pointer-events:none;display:grid;place-items:center;transition:transform .27s ease;filter:drop-shadow(0 3px 3px #16122b99)}.rabbit i{position:relative;width:54%;height:49%;border-radius:49% 49% 44% 44%;background:#fff1e7;margin-top:20%;display:grid;place-items:center;color:#302343;font-style:normal;font-size:clamp(.58rem,1.65vw,1rem);font-weight:950;line-height:1}.rabbit i::before,.rabbit i::after{content:"";position:absolute;width:30%;height:74%;bottom:78%;background:#ffc2cf;border:2px solid #fff1e7;border-radius:60% 60% 40% 40%}.rabbit i::before{left:9%;transform:rotate(-11deg)}.rabbit i::after{right:9%;transform:rotate(11deg)}.rabbit.hop i{animation:hop .3s ease}@keyframes hop{50%{transform:translateY(-30%) rotate(-5deg)}}@media(prefers-reduced-motion:reduce){.rabbit{transition:none}.rabbit.hop i{animation:none}}
+.caption{padding:11px 1px 0;flex-wrap:wrap;color:var(--muted);font-size:.79rem}.caption strong{color:var(--ink)}.feedback{margin:0 16px 15px;padding:9px 11px;background:#312a54;border-radius:9px;border-left:3px solid var(--violet);min-height:41px;font-size:.88rem;overflow-wrap:anywhere}.feedback.good{border-color:var(--mint);color:var(--mint)}.feedback.bad{border-color:var(--pink);color:#ffd5e4}.board-actions{display:flex;gap:8px;margin:0 16px 15px;flex-wrap:wrap}.board-actions button{padding:6px 10px;font-size:.82rem}
+.editor-head{border-bottom:1px solid var(--edge);padding-bottom:14px}.editor-body{padding:13px 15px 12px}.palette{display:flex;flex-wrap:wrap;gap:6px}.palette button{padding:5px 8px;background:#38315d;font-size:.82rem}.palette b{color:var(--violet);margin-right:2px}.algorithm{margin-top:16px}.sequence{display:grid;gap:6px;min-height:68px;padding:0;margin:0;list-style:none}.sequence .sequence{padding:5px 0 5px 11px;margin:0 7px 6px 12px;border-left:2px solid #655a8e;min-height:0}.empty{padding:9px;border:1px dashed #655a8e;border-radius:9px;color:var(--muted);font-size:.82rem}.block{background:#322d57;border:1px solid #524972;border-radius:9px;min-width:0}.block.active{outline:2px solid var(--mint);outline-offset:1px}.row{display:flex;flex-wrap:wrap;align-items:center;gap:5px;padding:5px;font-size:.8rem}.row strong{flex:1;min-width:max-content;padding-left:3px}.row select{font-size:.79rem;max-width:100%;min-height:28px;padding:1px 3px}.row button{min-width:28px;min-height:28px;padding:0 3px}.row button[aria-pressed=true]{background:var(--violet);color:#201936}.actions{padding:12px 15px;border-top:1px solid var(--edge);justify-content:flex-start;flex-wrap:wrap;gap:7px}.actions button{padding:7px 10px;font-weight:780;font-size:.86rem}.primary{background:var(--mint);border-color:var(--mint);color:#22213a}.quiet{background:transparent}.picker{margin:8px 0 0;color:var(--muted);font-size:.8rem}.footer{margin-top:18px;color:var(--muted);font-size:.79rem}
+@media(max-width:760px){.layout{grid-template-columns:1fr}.shell{padding-top:15px}.intro{padding-top:17px}.tile{font-size:clamp(.77rem,3.5vw,1.16rem)}.rabbit i{font-size:clamp(.6rem,2.5vw,1rem)}}@media(max-width:370px){.board-wrap,.editor-body{padding-inline:9px}.board-head,.editor-head{padding-inline:9px}.chip{padding-inline:5px}}
+</style>
+</head>
+<body>
+<main class="shell">
+  <header class="top">
+    <div class="brand"><b aria-hidden="true">∑</b> MATH HACKING</div>
+    <span class="progress" id="progress"></span>
+  </header>
+  <section class="intro">
+    <h1>Ruta <span>lógica</span></h1>
+    <p>Programa a Lúa para llegar al portal con la suma indicada.</p>
+  </section>
+  <nav class="levels" id="levels" aria-label="Retos"></nav>
+  <div class="layout">
+    <section class="card" aria-labelledby="challenge">
+      <header class="board-head">
+        <div><h2 id="challenge"></h2><p class="mission" id="mission"></p></div>
+        <span class="chip" id="target"></span>
+      </header>
+      <div class="board-wrap">
+        <div class="cases" id="cases" aria-label="Variantes del tablero"></div>
+        <div class="grid" id="grid" role="group" aria-label="Tablero"></div>
+        <div class="caption"><strong id="sum"></strong><span>◇ Portal · ▧ Obstáculo · ± Número</span></div>
+      </div>
+      <p class="feedback" id="feedback" role="status" aria-live="polite"></p>
+      <div class="board-actions"><button id="hint" class="quiet" aria-controls="hint-text" aria-expanded="false">Ver pista</button><button id="next" class="primary" hidden>Siguiente reto →</button></div>
+      <p class="feedback" id="hint-text" hidden></p>
+    </section>
+    <section class="card" aria-labelledby="editor-title">
+      <header class="editor-head">
+        <div><h2 id="editor-title">Tu algoritmo</h2><p class="mission">Pulsa un bloque para agregarlo. Se lee de arriba abajo.</p></div>
+        <span class="chip" id="budget"></span>
+      </header>
+      <div class="editor-body">
+        <h3>Bloques disponibles</h3>
+        <div class="palette" id="palette"></div>
+        <p class="picker" id="picker"></p>
+        <div class="algorithm"><h3>Secuencia</h3><ol class="sequence" id="sequence"></ol></div>
+      </div>
+      <div class="actions">
+        <button class="primary" id="run">▶ Ejecutar</button>
+        <button id="step">▷ Paso a paso</button>
+        <button class="quiet" id="reset">↺ Reiniciar</button>
+        <button class="quiet" id="clear">Vaciar</button>
+      </div>
+    </section>
+  </div>
+  <footer class="footer">Cada número cuenta una sola vez por recorrido. Puedes probar cualquier reto y volver a intentarlo.</footer>
+</main>
+<script>
+"use strict";
+
+const directions = {
+  right: { label: "Derecha", icon: "→", dx: 1, dy: 0 },
+  up: { label: "Arriba", icon: "↑", dx: 0, dy: -1 },
+  down: { label: "Abajo", icon: "↓", dx: 0, dy: 1 },
+  left: { label: "Izquierda", icon: "←", dx: -1, dy: 0 }
+};
+const predicates = {
+  even: { label: "La suma es par", test: sum => sum % 2 === 0 },
+  odd: { label: "La suma es impar", test: sum => sum % 2 !== 0 },
+  both: { label: "La suma es par Y ≥ 6", test: sum => sum % 2 === 0 && sum >= 6 }
+};
+const width = 7;
+const height = 5;
+const challenges = [
+  {
+    title: "Tres pasos", concept: "Secuencias", limit: 3,
+    mission: "Recoge 2 y 3 en el camino al portal.",
+    hint: "El portal está tres casillas a la derecha de Lúa.",
+    boards: [{ start: [1, 2], goal: [4, 2], target: 5, values: {"2,2": 2, "3,2": 3}, walls: ["2,1", "3,3", "5,2"] }]
+  },
+  {
+    title: "El desvío", concept: "Orden", limit: 6,
+    mission: "Rodea los obstáculos y elige los números que suman 7.",
+    hint: "Recoge el 4 en la fila de inicio y sube por la columna del 3.",
+    boards: [{ start: [1, 3], goal: [5, 1], target: 7, values: {"2,3": 4, "3,2": 3, "4,3": -2, "1,1": 8}, walls: ["1,2", "2,2", "4,2", "5,2", "5,3"] }]
+  },
+  {
+    title: "Salto exacto", concept: "Desplazamiento", limit: 3, jump: true,
+    mission: "Un salto avanza dos casillas y solo recoge el número del aterrizaje.",
+    hint: "Salta a la derecha desde el inicio. Después pasa por el −2.",
+    boards: [{ start: [1, 2], goal: [5, 2], target: 4, values: {"3,2": 6, "4,2": -2}, walls: ["2,2", "3,1", "3,3", "5,1"] }]
+  },
+  {
+    title: "Patrón de doses", concept: "Bucles", limit: 3, repeat: true, required: "repeat",
+    mission: "Usa un bloque Repetir para recoger tres doses con el mismo movimiento.",
+    hint: "Agrega Repetir, deja 3 vueltas e inserta dentro un paso a la derecha. Luego agrega el último paso fuera del bucle.",
+    boards: [{ start: [1, 3], goal: [4, 2], target: 6, values: {"2,3": 2, "3,3": 2, "4,3": 2}, walls: ["2,2", "3,2", "5,3", "4,4"] }]
+  },
+  {
+    title: "La puerta par", concept: "Condicionales", limit: 4, jump: true, condition: true, required: "condition",
+    mission: "Usa un bloque Si para saltar cuando la suma sea par.",
+    hint: "Da un paso a la derecha para recoger 4. Dentro del Si, coloca un salto a la derecha.",
+    boards: [{ start: [1, 2], goal: [5, 2], target: 6, values: {"2,2": 4, "4,2": 2}, walls: ["3,2", "3,1", "4,3", "5,1"] }]
+  },
+  {
+    title: "Un programa, dos rutas", concept: "Paridad", limit: 4, condition: true, required: "condition",
+    mission: "El mismo programa debe resolver A y B. Si el número es par, toma la ruta de arriba.",
+    hint: "Avanza a la derecha, sube solo si la suma es par y termina con otro paso a la derecha.",
+    boards: [
+      { start: [1, 2], goal: [3, 1], target: 2, values: {"2,2": 2}, walls: ["3,2", "1,1", "2,3"] },
+      { start: [1, 2], goal: [3, 2], target: 3, values: {"2,2": 3}, walls: ["2,1", "1,1", "2,3"] }
+    ]
+  },
+  {
+    title: "Las dos condiciones", concept: "Operador Y", limit: 4, condition: true, required: "condition", conjunction: true,
+    mission: "Resuelve A, B y C con un programa. Sube únicamente si la suma es par y es de al menos 6.",
+    hint: "Prueba el predicado «La suma es par Y ≥ 6» después de recoger el primer número.",
+    boards: [
+      { start: [1, 2], goal: [3, 1], target: 8, values: {"2,2": 8}, walls: ["3,2", "1,1", "2,3"] },
+      { start: [1, 2], goal: [3, 2], target: 4, values: {"2,2": 4}, walls: ["2,1", "1,1", "2,3"] },
+      { start: [1, 2], goal: [3, 2], target: 7, values: {"2,2": 7}, walls: ["2,1", "1,1", "2,3"] }
+    ]
+  }
+];
+
+const caseNames = ["A", "B", "C"];
+const storageKey = "math-hacking-ruta-logica-v1";
+const initialMessage = "Agrega bloques y prueba tu algoritmo.";
+const $ = id => document.getElementById(id);
+const keyAt = (x, y) => x + "," + y;
+const signed = value => value >= 0 ? "+" + value : "−" + Math.abs(value);
+const isContainer = block => block.kind === "repeat" || block.kind === "condition";
+
+function loadProgress() {
+  try {
+    const saved = JSON.parse(localStorage.getItem(storageKey) || "[]");
+    return new Set(Array.isArray(saved) ? saved.filter(index => Number.isInteger(index) && index >= 0 && index < challenges.length) : []);
+  } catch {
+    return new Set();
+  }
+}
+
+function newPosition(board) {
+  return { x: board.start[0], y: board.start[1], sum: 0, collected: new Set() };
+}
+
+function* instructions(blocks, position) {
+  for (const block of blocks) {
+    if (block.kind === "repeat") {
+      for (let lap = 1; lap <= block.times; lap++) {
+        yield { block, message: "Repetición " + lap + " de " + block.times + "." };
+        yield* instructions(block.children, position);
+      }
+    } else if (block.kind === "condition") {
+      const predicate = predicates[block.predicate];
+      const matches = predicate.test(position.sum);
+      yield { block, message: predicate.label + " → " + (matches ? "verdadero. Entra al bloque." : "falso. Omite el bloque.") };
+      if (matches) yield* instructions(block.children, position);
+    } else {
+      yield { block };
+    }
+  }
+}
+
+function move(board, position, block) {
+  const direction = directions[block.direction];
+  const distance = block.kind === "jump" ? 2 : 1;
+  const x = position.x + direction.dx * distance;
+  const y = position.y + direction.dy * distance;
+  const key = keyAt(x, y);
+  if (x < 0 || x >= width || y < 0 || y >= height) return { error: "Lúa saldría del tablero." };
+  if (board.walls.includes(key)) return { error: "Lúa chocaría con un obstáculo en la casilla de llegada." };
+  position.x = x;
+  position.y = y;
+  if (!Object.hasOwn(board.values, key) || position.collected.has(key)) return { message: direction.label + "." };
+  const value = board.values[key];
+  position.collected.add(key);
+  position.sum += value;
+  return { message: direction.label + ". Recogiste " + signed(value) + "." };
+}
+
+function resultFor(board, position, required, used) {
+  if (position.x !== board.goal[0] || position.y !== board.goal[1]) return "El programa terminó antes de llegar al portal.";
+  if (position.sum !== board.target) return "Llegaste al portal con " + position.sum + ". La meta era " + board.target + ".";
+  if (required && !used.has(required)) return "Incluye un bloque " + (required === "repeat" ? "Repetir" : "Si") + " que se ejecute.";
+  return "";
+}
+
+function countBlocks(blocks) {
+  return blocks.reduce((count, block) => count + 1 + countBlocks(block.children), 0);
+}
+
+function hasEmptyContainer(blocks) {
+  return blocks.some(block => isContainer(block) && (!block.children.length || hasEmptyContainer(block.children)));
+}
+
+const completed = loadProgress();
+const programs = challenges.map(() => []);
+let levelIndex = 0;
+let caseIndex = 0;
+let nextId = 0;
+let insertion = null;
+let activeId = null;
+let position;
+let execution = null;
+let timer = null;
+let running = false;
+let won = false;
+let showHint = false;
+let tiles = [];
+let rabbit;
+
+const current = () => challenges[levelIndex];
+const board = () => current().boards[caseIndex];
+const program = () => programs[levelIndex];
+
+function node(tag, label, className) {
+  const element = document.createElement(tag);
+  if (label) element.textContent = label;
+  if (className) element.className = className;
+  return element;
+}
+
+function button(label, action, accessibleName) {
+  const element = node("button", label);
+  element.type = "button";
+  if (accessibleName) element.setAttribute("aria-label", accessibleName);
+  element.addEventListener("click", action);
+  return element;
+}
+
+function tell(message, style = "") {
+  $("feedback").textContent = message;
+  $("feedback").className = ("feedback " + style).trim();
+}
+
+function renderLevels() {
+  $("progress").textContent = completed.size + " de " + challenges.length + " retos resueltos";
+  $("levels").replaceChildren(...challenges.map((challenge, index) => {
+    const label = "Reto " + (index + 1) + ". " + challenge.title + (completed.has(index) ? ", resuelto" : "");
+    const element = button(String(index + 1), () => selectLevel(index), label);
+    element.className = "level" + (completed.has(index) ? " done" : "");
+    element.title = challenge.concept + " · " + challenge.title;
+    if (index === levelIndex) element.setAttribute("aria-current", "true");
+    return element;
+  }));
+}
+
+function renderBoard() {
+  $("target").textContent = "Meta " + board().target;
+  $("cases").replaceChildren(...(current().boards.length > 1 ? current().boards.map((_, index) => {
+    const element = button("Tablero " + caseNames[index], () => {
+      resetExecution(index);
+      tell("Tablero " + caseNames[index] + " listo para explorar.");
+    });
+    element.setAttribute("aria-pressed", String(caseIndex === index));
+    return element;
+  }) : []));
+  tiles = [];
+  const map = board();
+  for (let y = 0; y < height; y++) {
+    for (let x = 0; x < width; x++) {
+      const key = keyAt(x, y);
+      const value = map.values[key];
+      const isGoal = x === map.goal[0] && y === map.goal[1];
+      const isHome = x === map.start[0] && y === map.start[1];
+      const isWall = map.walls.includes(key);
+      const tile = node("div", isGoal ? "◇" : isWall ? "▧" : value === undefined ? "" : signed(value), "tile");
+      if (isGoal) tile.classList.add("goal");
+      if (isWall) tile.classList.add("wall");
+      if (isHome) tile.classList.add("home");
+      if (value !== undefined) tile.classList.add("value");
+      if (value < 0) tile.classList.add("negative");
+      const location = "Fila " + (y + 1) + ", columna " + (x + 1);
+      const content = isGoal ? "portal" : isHome ? "inicio" : isWall ? "obstáculo" : value === undefined ? "libre" : "número " + signed(value);
+      tile.setAttribute("role", "img");
+      tile.setAttribute("aria-label", location + ", " + content);
+      tiles.push(tile);
+    }
+  }
+  rabbit = node("div", "", "rabbit");
+  rabbit.append(node("i", "•ᴗ•"));
+  rabbit.setAttribute("aria-hidden", "true");
+  $("grid").replaceChildren(...tiles, rabbit);
+  updatePosition(false);
+}
+
+function updatePosition(animate) {
+  const tile = tiles[position.y * width + position.x];
+  if (!tile) return;
+  rabbit.style.transitionDuration = animate ? "" : "0s";
+  rabbit.style.width = tile.offsetWidth + "px";
+  rabbit.style.height = tile.offsetHeight + "px";
+  rabbit.style.transform = "translate(" + tile.offsetLeft + "px," + tile.offsetTop + "px)";
+  rabbit.classList.remove("hop");
+  if (animate) {
+    void rabbit.offsetWidth;
+    rabbit.classList.add("hop");
+  }
+  $("sum").textContent = "Suma actual " + position.sum;
+  $("sum").setAttribute("aria-label", "Suma actual " + position.sum + ". Lúa está en fila " + (position.y + 1) + ", columna " + (position.x + 1));
+  for (const key of position.collected) {
+    const [x, y] = key.split(",").map(Number);
+    const collected = tiles[y * width + x];
+    collected.classList.add("collected");
+    collected.textContent = "✓";
+    collected.setAttribute("aria-label", "Fila " + (y + 1) + ", columna " + (x + 1) + ", número recogido");
+  }
+}
+
+function selectLevel(index) {
+  levelIndex = index;
+  insertion = null;
+  showHint = false;
+  $("challenge").textContent = current().title;
+  $("mission").textContent = current().mission;
+  $("hint").textContent = "Ver pista";
+  $("hint").setAttribute("aria-expanded", "false");
+  $("hint-text").hidden = true;
+  $("next").hidden = true;
+  renderLevels();
+  resetExecution(0);
+  tell(initialMessage);
+}
+
+function stopTimer() {
+  clearTimeout(timer);
+  timer = null;
+  running = false;
+}
+
+function resetExecution(index = caseIndex) {
+  stopTimer();
+  execution = null;
+  activeId = null;
+  won = false;
+  $("next").hidden = true;
+  caseIndex = index;
+  position = newPosition(board());
+  renderBoard();
+  renderEditor();
+}
+
+function edit(change) {
+  change();
+  resetExecution();
+  tell("Algoritmo actualizado. Puedes probarlo.");
+}
+
+function addBlock(kind, direction) {
+  if (countBlocks(program()) >= current().limit) return;
+  const focusIndex = [...$("palette").children].indexOf(document.activeElement);
+  edit(() => {
+    const block = { id: ++nextId, kind, direction, times: 3, predicate: "even", children: [] };
+    (insertion ? insertion.children : program()).push(block);
+    if (isContainer(block)) insertion = block;
+  });
+  const control = $("palette").children[focusIndex];
+  if (control) (control.disabled ? $("run") : control).focus();
+}
+
+function setInsertion(block) {
+  insertion = block;
+  renderEditor();
+}
+
+function includesBlock(block, target) {
+  return block === target || block.children.some(child => includesBlock(child, target));
+}
+
+function blockSelect(options, value, label, onChange) {
+  const select = node("select");
+  select.setAttribute("aria-label", label);
+  for (const [id, text] of options) {
+    const option = node("option", text);
+    option.value = id;
+    select.append(option);
+  }
+  select.value = value;
+  select.addEventListener("change", () => onChange(select.value));
+  return select;
+}
+
+function renderSequence(list, blocks, nested = false) {
+  list.replaceChildren();
+  if (!blocks.length) {
+    list.append(node("li", nested ? "Agrega aquí las instrucciones del bloque." : "Tu secuencia está vacía.", "empty"));
+  }
+  for (const [index, block] of blocks.entries()) {
+    const item = node("li", "", "block");
+    item.dataset.id = block.id;
+    item.classList.toggle("active", activeId === block.id);
+    const row = node("div", "", "row");
+    const label = block.kind === "repeat" ? "Repetir" : block.kind === "condition" ? "Si…" : (block.kind === "jump" ? "Salto " : "Paso ") + directions[block.direction].icon;
+    row.append(node("strong", (index + 1) + ". " + label));
+    if (block.kind === "jump") {
+      const options = Object.entries(directions).map(([id, direction]) => [id, direction.label]);
+      row.append(blockSelect(options, block.direction, "Dirección del salto", value => edit(() => { block.direction = value; })));
+    }
+    if (block.kind === "repeat") {
+      const options = [2, 3, 4, 5].map(times => [times, times + " vueltas"]);
+      row.append(blockSelect(options, block.times, "Número de vueltas", value => edit(() => { block.times = Number(value); })));
+    }
+    if (block.kind === "condition") {
+      const options = Object.entries(predicates).filter(([id]) => id !== "both" || current().conjunction);
+      row.append(blockSelect(options.map(([id, condition]) => [id, condition.label]), block.predicate, "Condición del bloque Si", value => edit(() => { block.predicate = value; })));
+    }
+    const reorder = (offset, icon, name) => {
+      const control = button(icon, () => edit(() => {
+        const neighbor = index + offset;
+        [blocks[index], blocks[neighbor]] = [blocks[neighbor], blocks[index]];
+      }), name + " " + label);
+      control.disabled = index + offset < 0 || index + offset >= blocks.length;
+      return control;
+    };
+    row.append(reorder(-1, "↑", "Subir"), reorder(1, "↓", "Bajar"), button("×", () => edit(() => {
+      if (includesBlock(block, insertion)) insertion = null;
+      blocks.splice(index, 1);
+    }), "Quitar " + label));
+    item.append(row);
+    if (isContainer(block)) {
+      const inside = button("+ Dentro", () => setInsertion(insertion === block ? null : block), "Insertar dentro de " + label);
+      inside.setAttribute("aria-pressed", String(insertion === block));
+      row.append(inside);
+      const children = node("ol", "", "sequence");
+      renderSequence(children, block.children, true);
+      item.append(children);
+    }
+    list.append(item);
+  }
+}
+
+function renderEditor() {
+  const challenge = current();
+  const count = countBlocks(program());
+  $("budget").textContent = count + " / " + challenge.limit + " bloques";
+  const palette = Object.entries(directions).map(([direction, data]) => {
+    const element = button("", () => addBlock("move", direction), "Agregar paso a la " + data.label.toLowerCase());
+    if (direction === "up" || direction === "down") element.setAttribute("aria-label", "Agregar paso hacia " + data.label.toLowerCase());
+    element.append(node("b", data.icon), document.createTextNode(" " + data.label));
+    return element;
+  });
+  if (challenge.jump) palette.push(button("↠ Saltar", () => addBlock("jump", "right")));
+  if (challenge.repeat) palette.push(button("⟳ Repetir", () => addBlock("repeat")));
+  if (challenge.condition) palette.push(button("◇ Si…", () => addBlock("condition")));
+  palette.forEach(element => { element.disabled = count >= challenge.limit; });
+  $("palette").replaceChildren(...palette);
+  $("picker").textContent = insertion ? "Insertando dentro de " + (insertion.kind === "repeat" ? "Repetir" : "Si") + ". Pulsa «+ Dentro» otra vez para salir." : "";
+  renderSequence($("sequence"), program());
+  $("run").disabled = count === 0;
+  $("step").disabled = count === 0 || running;
+  $("clear").disabled = count === 0;
+  $("run").textContent = running ? "Ⅱ Pausar" : "▶ Ejecutar";
+}
+
+function begin() {
+  if (execution && !execution.finished) return true;
+  if (hasEmptyContainer(program())) {
+    tell("Agrega al menos una instrucción dentro de cada bloque Repetir o Si.", "bad");
+    return false;
+  }
+  resetExecution(0);
+  execution = { iterator: instructions(program(), position), used: new Set(), finished: false, steps: 0 };
+  return true;
+}
+
+function finish(error) {
+  stopTimer();
+  execution.finished = true;
+  renderEditor();
+  if (error) {
+    const prefix = current().boards.length > 1 ? "Tablero " + caseNames[caseIndex] + ". " : "";
+    tell(prefix + error, "bad");
+    return;
+  }
+  won = true;
+  completed.add(levelIndex);
+  try {
+    localStorage.setItem(storageKey, JSON.stringify([...completed]));
+  } catch {
+    // The game stays playable if browser storage is unavailable.
+  }
+  renderLevels();
+  $("next").hidden = levelIndex === challenges.length - 1;
+  const prefix = current().boards.length > 1 ? "Todos los tableros resueltos." : "¡Reto resuelto! Lúa llegó al portal con la suma exacta.";
+  tell(prefix + (completed.size === challenges.length ? " Completaste los siete retos." : ""), "good");
+}
+
+function advance() {
+  const { value, done } = execution.iterator.next();
+  if (done) {
+    const error = resultFor(board(), position, current().required, execution.used);
+    if (error || caseIndex + 1 === current().boards.length) {
+      activeId = null;
+      finish(error);
+      return;
+    }
+    caseIndex++;
+    position = newPosition(board());
+    execution.iterator = instructions(program(), position);
+    execution.used.clear();
+    execution.steps = 0;
+    activeId = null;
+    renderBoard();
+    tell("Tablero anterior resuelto. Sigue el tablero " + caseNames[caseIndex] + ".");
+  } else {
+    execution.steps++;
+    activeId = value.block.id;
+    execution.used.add(value.block.kind);
+    const outcome = value.message ? value : move(board(), position, value.block);
+    const prefix = "Paso " + execution.steps + ". ";
+    if (outcome.error) {
+      finish(prefix + outcome.error);
+      return;
+    }
+    if (!value.message) updatePosition(true);
+    tell(prefix + outcome.message + " Suma " + position.sum + ".");
+  }
+  for (const item of $("sequence").querySelectorAll(".block")) {
+    item.classList.toggle("active", Number(item.dataset.id) === activeId);
+  }
+}
+
+function tick() {
+  if (!running) return;
+  advance();
+  if (running) timer = setTimeout(tick, 440);
+}
+
+$("run").addEventListener("click", () => {
+  if (running) {
+    stopTimer();
+    renderEditor();
+    tell("En pausa. Puedes continuar o avanzar un paso.");
+    return;
+  }
+  if (begin()) {
+    running = true;
+    renderEditor();
+    tick();
+  }
+});
+$("step").addEventListener("click", () => { if (begin()) advance(); });
+$("clear").addEventListener("click", () => edit(() => { program().length = 0; insertion = null; }));
+$("reset").addEventListener("click", () => { resetExecution(0); tell("Lúa volvió al inicio. Tu secuencia sigue lista."); });
+$("next").addEventListener("click", () => { if (won && levelIndex + 1 < challenges.length) selectLevel(levelIndex + 1); });
+$("hint").addEventListener("click", () => {
+  showHint = !showHint;
+  $("hint").textContent = showHint ? "Ocultar pista" : "Ver pista";
+  $("hint").setAttribute("aria-expanded", String(showHint));
+  $("hint-text").hidden = !showHint;
+  $("hint-text").textContent = current().hint;
+});
+window.addEventListener("resize", () => updatePosition(false));
+selectLevel(0);
+</script>
+</body>
+</html>
